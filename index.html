@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html id="html">
+	<head>
+        <script src="./jquery-3.4.1.slim.min.js"></script>
+        <script src= "http://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+        <script src="jquery.validate.js"></script>
+		<script type="text/javascript" src="./app.js"></script>
+        <script type="text/javascript" src="registrationValidate.js"></script>
+        <script type="text/javascript" src="loginValidate.js"></script>
+        <script type="text/javascript" src="settingsBackend.js"></script>
+        <script type="text/javascript" src="monstersMovement.js"></script>
+        <script type="text/javascript" src="draw.js"></script>
+        <link rel="stylesheet" type="text/css" href="style.css" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+         
+	</head>
+	<body id="body">
+        <div id="aboutModal" class="modal">
+			<u>About</u>
+            <p>We used jquery for validation and to acces variables</p>
+            <p>and we didn't use templates</p>
+            <p>One of the hardest things in the assignment was to design</p>
+            <p>the website, and We  also had a hard time getting the</p>
+            <p>monsters to follow the Pacman optimally.</p>
+        </div>      
+        <header>
+            <div id="header">
+                <img src="photos/logoPicture2.png" height="50">
+                <img src="photos/logo.png" height="50">
+				<label id="topLable" for="">Eitan Chertok , Ehud Malul</label>
+            </div>
+            <div id="menu">
+                <li><a onclick="showOneScreen('welcome')" class="navBar">Welcome</a></li>
+               <li><a onclick="showOneScreen('registrationScreen')" class="navBar">Register</a></li>
+               <li><a onclick="showOneScreen('loginPage')" class="navBar">Login</a></li>
+               <li><a href="#aboutModal" rel="modal:open" class="navBar">About</a></li>
+               <li><a onclick="showOneScreen('settingsPage')" class="navBar">Play</a></li>
+             </div>
+        </header>
+         <br><br><br><br><br><br>
+		<div id="welcome">
+			<button onclick="showOneScreen('loginPage')" class="welcomeButton">Log-in</button>
+			<button onclick="showOneScreen('registrationScreen')" class="welcomeButton">Sign-up</button>
+		</div>
+		<div id="loginPage">
+            <form id = "loginForm" autocomplete="off" onsubmit="authenticate(userNameLogin,passwordLogin); return false;">
+                <label for="userNameLogin">Please Enter User Name:</label>
+                <br>
+                <input type="text" name="userNameLogin" id="userNameLogin" cols="30" rows="10"></input>
+                <br>
+                <label for="passwordLogin">Please Enter Password:</label>
+                <br>
+                <input type="password" name="passwordLogin" id="passwordLogin" cols="30" rows="10"></input>
+                <br>
+                <input type="submit" value="Log-in">
+            </form>
+		</div>
+
+		<div id="settingsPage">
+			<form id="settingForm" autocomplete="off" onsubmit="submitSettingsForm();return false;">
+				<button onclick="settingsGameKeyUp(); return false;">Choose Game Up Key: </button>
+                <label id="showUpKey"></label>
+                <br>
+                <button onclick="settingsGameKeyDown(); return false;">Choose Game Down Key: </button>
+                <label id="showDownKey"></label>
+                <br>
+                <button onclick="settingsGameKeyLeft(); return false;">Choose Game Left Key: </button>
+                <label id="showLeftKey"></label>
+                <br>
+                <button onclick="settingsGameKeyRight(); return false;">Choose Game Right Key: </button>
+                <label id="showRightKey"></label>
+                <br>
+				<label for="ballNumbers">Please Enter Number Of Balls</label>
+				<br>
+				<input name="ballNumbers" id="ballNumbers" type="text">
+				<br>
+				<label for="ballColor5">Please Enter 5 Points Ball Color</label>
+				<br>
+				<input id="ballColor5" name="ballColor5" type="color">
+				<br>
+                <label for="ballColor15">Please Enter 15 Points Ball Color</label>
+				<br>
+				<input id="ballColor15" name="ballColor15" type="color">
+				<br>
+                <label for="ballColor25">Please Enter 25 Points Ball Color</label>
+				<br>
+				<input id="ballColor25" name="ballColor25" type="color">
+				<br>
+				<label for="gameTime">Please Enter Game Time</label>
+                <br>
+                <input id="gameTimeFromSettings" name="gameTimeFromSettings" type="text">
+				<br>
+				<label for="monsterPicker">Please Enter Number Of Monsters, between 1 and 4:</label>
+				<br>
+				<input type="text" id="monsterPicker" name="monsterPicker">
+				<br>
+				<button onclick="generateRandomSettings();return false">Random Settings</button>
+                <input type="submit" value="Submit And Start" class="submitButtom">				
+			</form>
+		</div>
+		<div id="gameScreen" class="parent">
+            <audio id = "audio">
+                <source src = "pacmanMusic.mp3" type = "audio/mpeg">
+            </audio>
+			<div class="child">
+                User: <label id="gameUserName" type = "text"></label>
+				<div id="score">
+					<label for="lblScore">SCORE:</label>
+					<input id="lblScore" type="text" />
+				</div>
+				<div id="time">
+					<label for="lblTime">TIME:</label>
+					<input id="lblTime" type="text" />
+				</div>
+				<div id="strikes">
+					<label for="lblStrikes">STRIKES:</label>
+					<input id="lblStrikes" type="text" />
+				</div>
+			</div>
+			<div id="game" class="child">
+				<canvas id="canvas" height="600" width="600"></canvas>
+				
+			</div>
+			<div style="flex-grow: 1" id="settingsInGameScreen" class="child">
+				LeftArrowKey: 
+				<label id="LeftArrowGameDisplay">LeftArrowKey</label>
+				<br>
+				RightArrowKey: 
+				<label id="RightArrowGameDisplay">RightArrowKey</label>
+				<br>
+				UpArrowKey: 
+				<label id="UpArrowGameDisplay">UpArrowKey</label>
+				<br>
+				DownArrowKey: 
+				<label id="DownArrowGameDisplay">DownArrowKey</label>
+				<br>
+				NumberOfBalls: 
+				<label id="NumberOfBallsGameDisplay">50</label>
+				<br>
+				FivePointBallCollor: 
+				<label id="FivePointBallCollorGameDisplay">Black</label>
+				<br>
+				FiveTeenPointBallCollor: 
+				<label id="FiveTeenPointBallCollorGameDisplay">Blue</label>
+				<br>
+				TwentyFivePointBallCollor: 
+				<label id="TwentFivePointBallCollorGameDisplay">red</label>
+				<br>
+				GameTime: 
+				<label id="GameTimeGameDisplay">60</label>
+				<br>
+				NumberOfMonsters: 
+				<label id="NumberOfMonstersGameDisplay">2</label>
+				<br>
+				<button onclick="newGame()">New Game</button>
+			</div>
+		</div>
+        <div id="registrationScreen">
+            <form id ="registrationForm" autocomplete="off" onsubmit="submitRegistrationForm(); return false;   ">
+                <label for ="registrationUsername">Username:</label><br>
+                <input type="text" id="registrationUsername" name="registrationUsername"><br>
+                <label for ="registrationPassword">Password:</label><br>
+                <input type="password" id="registrationPassword" name="registrationPassword"><br>
+                <label for ="registrationName">Full name:</label><br>
+                <input type="text" id="registrationName" name="registrationName"><br>
+                <label for ="registrationEmail">Email address:</label><br>
+                <input type="email" id="registrationEmail" name="registrationEmail"><br>
+                <label for ="registrationBirthDate">Birth date:</label><br>
+                <input type="text" id="registrationBirthDate" name="registrationBirthDate"><br><br><br><br><br><br><br><br><br><br><br><br>
+                <input type="submit" value="Submit" class="submitButton">
+            </form>
+        </div>
+        <div id="alreadyLoggedIn">
+            You are logged in as <label id="loggedInAs"></label>
+        </div>
+		<br><br>
+        <footer>
+            <img src="photos/logo.png" height="40">
+			<a id="wirteNice" href="mailto:Eitanche@post.bgu.ac.il, Ehudmal@post.bgu.ac.il">Contact Us</a>
+        </footer>
+		</body>
+</html>
